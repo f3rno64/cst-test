@@ -1,19 +1,9 @@
 import React from 'react'
 import _keys from 'lodash/keys'
 
-import Box from '@mui/material/Box'
-import Paper from '@mui/material/Paper'
-import Stack from '@mui/material/Stack'
-import { styled } from '@mui/material/styles'
-import Typography from '@mui/material/Typography'
-
-import FeatureDetails from './components/feature_details'
+import Sidebar from './components/sidebar'
 import getLatLngCenter from './util/get_lat_lng_center'
 import './cst_test.css'
-
-const SidebarItem = styled(Paper)(({ theme }) => ({
-  padding: theme.spacing(1),
-}))
 
 interface CSTLatLng {
   lat: number
@@ -142,38 +132,12 @@ class CSTTest extends React.Component<CSTTestProps, CSTTestState> {
 
     return (
       <div id="cst-test">
-        <div id="cst-test-sidebar">
-          <Box sx={{ width: '100%' }}>
-            <Typography variant="h6" gutterBottom>
-              Geo Features
-            </Typography>
-
-            <Stack spacing={2}>
-              {_keys(features).map((featureId) => {
-                const feature = features[featureId]
-                const { name } = feature
-                const polygonData = polygons.find(({ featureId: pFId }) => (
-                  pFId === featureId
-                ))
-
-                return (
-                  <SidebarItem
-                    onClick={this.onPolygonSelected.bind(this, polygonData)}
-                    key={name}
-                  >{name}</SidebarItem>
-                )
-              })}
-            </Stack>
-
-            {selectedFeature && (
-              <>
-                <br/>
-                <Typography variant="h6">Selected Feature</Typography>
-                <FeatureDetails feature={selectedFeature} />
-              </>
-            )}
-          </Box>
-        </div>
+        <Sidebar
+          features={features}
+          polygons={polygons}
+          selectedFeature={selectedFeature}
+          onSelectFeature={this.onPolygonSelected.bind(this)}
+        />
 
         <div id="cst-test-content">
           <div id="cst-test-map"></div>
