@@ -47,6 +47,9 @@ class FeatureDetails extends React.PureComponent<FeatureDetailsProps, any> {
     const { name } = properties
     const propertyKeys = _keys(properties).filter(k => !_isFinite(+k))
 
+    // The first data points are way out of range for some reason
+    const cleanedData = data.slice(3)
+
     return (
       <Card>
         <CardContent>
@@ -59,7 +62,7 @@ class FeatureDetails extends React.PureComponent<FeatureDetailsProps, any> {
           <LineChart data={{
             datasets: [{
               label: name,
-              data: data.map(({ x, y }) => ({ x: x.toLocaleString(), y })),
+              data: cleanedData.map(({ x, y }) => ({ x: x.toLocaleString(), y })),
               borderColor: 'rgb(255, 99, 132)',
               backgroundColor: 'rgba(255, 99, 132, 0.5)'
             }]
